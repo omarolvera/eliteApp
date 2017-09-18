@@ -13,7 +13,7 @@ export class MyApp {
 
   rootPage: any = MyTeamspage;
 
-  pages: Array<{title: string, component: any}>;
+  
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
