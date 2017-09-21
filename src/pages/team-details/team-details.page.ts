@@ -3,12 +3,13 @@ import {  NavController, NavParams } from 'ionic-angular';
 
 
 @Component({
-  selector: 'page-team-details',
   templateUrl: 'team-details.page.html',
 })
 export class TeamDetailsPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+team:any;
+  constructor(public nav: NavController, public navParams: NavParams) {
+    this.team= this.navParams.data;
+    console.log('nav params',this.navParams);
   }
 
 
