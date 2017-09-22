@@ -32,5 +32,9 @@ currentTourney:any={};
             return this.currentTourney;
         })
     }
+
+    getCurrentTourneyData(){
+        return this.currentTourney;
+    }
 }
 
