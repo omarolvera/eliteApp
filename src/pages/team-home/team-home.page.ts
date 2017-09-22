@@ -18,7 +18,8 @@ standingsTab= StandingsPage;
   }
 
 goHome(){
-  this.nav.push(MyTeamspage);
+  //this.nav.push(MyTeamspage);
+  this.nav.popToRoot()
 }
 
 }

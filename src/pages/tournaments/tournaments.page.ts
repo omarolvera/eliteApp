@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {  NavController, NavParams } from 'ionic-angular';
-import { MyTeamspage , TeamsPage} from '../pages';
-
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import { MyTeamspage, TeamsPage } from '../pages';
+import { FootballApiService } from '../../shared/shared';
 
 
 @Component({
@@ -10,11 +10,32 @@ import { MyTeamspage , TeamsPage} from '../pages';
 })
 export class TournamentsPage {
 
-  constructor(public nav: NavController, public navParams: NavParams) {
+  tournaments: any;
+
+  constructor(public nav: NavController,
+    public navParams: NavParams,
+    private footballApi: FootballApiService,
+    private loadingController: LoadingController) {
   }
 
- itemTapped(){
-   this.nav.push(TeamsPage);
- }
+  itemTapped($event, tourney) {
+    this.nav.push(TeamsPage, tourney);
+  }
 
+  ionViewDidLoad() {
+    let loader = this.loadingController.create({
+      content: 'Getting tournaments...'
+    });
+    loader.present().then(() => {
+      this.footballApi.getTournaments().then(data => {
+        this.tournaments = data;
+        loader.dismiss();
+      });
+
+    });
+
+
+  }
+
+ 
 }

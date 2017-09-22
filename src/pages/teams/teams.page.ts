@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {  NavController, NavParams } from 'ionic-angular';
 import { TeamHomePage } from '../pages';
+import { FootballApiService } from '../../shared/shared';
+
 
 
 
@@ -17,17 +19,23 @@ import { TeamHomePage } from '../pages';
   templateUrl: 'teams.page.html',
 })
 export class TeamsPage {
+teams=[];
+  // teams =[
+  //   { id:1, name:'HC Elite'},
+  //   { id:2, name:'Team Takeover'},
+  //   { id:3, name:'DC Thunder'}
+  // ];
 
-  teams =[
-    { id:1, name:'HC Elite'},
-    { id:2, name:'Team Takeover'},
-    { id:3, name:'DC Thunder'}
-  ];
+  constructor(public nav: NavController, public navParams: NavParams, private footballApi: FootballApiService) {
 
-  constructor(public nav: NavController, public navParams: NavParams) {
   }
 
-
+  ionViewDidLoad(){
+  let selectedTourney= this.navParams.data;
+  this.footballApi.getTorunamentData(selectedTourney.id).subscribe((response)=>{
+this.teams=response.teams;
+  });
+}
 
   itemTapped($event, team){
 
