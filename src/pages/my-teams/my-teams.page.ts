@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { TournamentsPage } from '../pages';
+import { NavController, LoadingController } from 'ionic-angular';
+import { TournamentsPage,TeamHomePage } from '../pages';
+import { FootballApiService } from '../../shared/shared';
+
 
 
 
@@ -25,11 +27,22 @@ export class MyTeamspage{
         tournamentName: "Holiday Hoops Challenge"
     }
 ]
-    constructor(private nav: NavController){
+    constructor(private nav: NavController, private footballApi: FootballApiService, private loadingController:LoadingController){
         
     }
     
     goToTournaments(){
         this.nav.push(TournamentsPage)
+    }
+    
+    favoriteTapped($event, favorite){
+let loader = this.loadingController.create({
+content: 'Getting data...',
+dismissOnPageChange: true
+});
+
+loader.present();
+this.footballApi.getTorunamentData(favorite.tournamentId)
+.subscribe( t => this.nav.push(TeamHomePage, favorite.team))
     }
 }

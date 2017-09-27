@@ -1,25 +1,31 @@
 import { Component } from '@angular/core';
 import {  NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the StandingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
+import { FootballApiService } from '../../shared/shared';
+import * as _ from 'lodash';
 
 @Component({
  
   templateUrl: 'standings.page.html',
 })
 export class StandingsPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+standings: any[];
+team: any;
+allStandings: any[];
+  constructor(public nav: NavController, public navParams: NavParams, private footballApi: FootballApiService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StandingsPage');
+    this.team= this.navParams.data;
+    let tourneyData= this.footballApi.getCurrentTourneyData();
+    this.standings= tourneyData.standings;
+
+this.allStandings= 
+_.chain(this.standings)
+.groupBy('division')
+.toPairs()
+.map(item => _.zipObject(['divisionName', 'divisionStandings'], item))
+.value();
+
   }
 
 }
