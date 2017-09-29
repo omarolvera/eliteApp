@@ -4,7 +4,7 @@ import { GamePage } from '../pages';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { FootballApiService } from '../../shared/shared';
+import { FootballApiService, UserSettingsService } from '../../shared/shared';
 
 
 
@@ -22,11 +22,42 @@ export class TeamDetailsPage {
   isFollowing = false;
 
   constructor(
+    private userSettings: UserSettingsService,
     private toast: ToastController,
     private alert: AlertController,
     private nav: NavController,
     private navParams: NavParams,
     private footballApi: FootballApiService) {
+
+  }
+
+  ionViewDidLoad() {
+    this.team = this.navParams.data;
+    this.tourneyData = this.footballApi.getCurrentTourneyData();
+    this.games = _.chain(this.tourneyData.games)
+      .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
+      .map(g => {
+        let isTeam1 = (g.team1Id === this.team.id);
+        let opponentName = isTeam1 ? g.team2 : g.team1;
+        let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score)
+        return {
+          gameId: g.id,
+          opponent: opponentName,
+          time: Date.parse(g.time),
+          location: g.location,
+          locationUrl: g.locationUrl,
+          scoreDisplay: scoreDisplay,
+          homeAway: (isTeam1 ? "vs." : "at")
+        };
+      })
+      .value();
+
+    this.allgames = this.games;
+    this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });
+    this.userSettings.isFavoriteTeam(this.team.id).then(value => { 
+    
+      this.isFollowing = value
+    });
 
   }
 
@@ -61,6 +92,8 @@ export class TeamDetailsPage {
             text: 'Yes',
             handler: () => {
               this.isFollowing = false;
+            this.userSettings.unfavoriteTeam(this.team);
+
               let toast= this.toast.create({
                 message: 'You have unfollowed this team.',
                 duration: 2000,
@@ -78,37 +111,15 @@ export class TeamDetailsPage {
       confirm.present();
     }else{
       this.isFollowing=true;
+      this.userSettings.favoriteTeam(this.team, 
+        this.tourneyData.tournament.id, 
+        this.tourneyData.tournament.name);
     }
 
 
   }
 
-  ionViewDidLoad() {
-    this.team = this.navParams.data;
-    this.tourneyData = this.footballApi.getCurrentTourneyData();
-    this.games = _.chain(this.tourneyData.games)
-      .filter(g => g.team1Id === this.team.id || g.team2Id === this.team.id)
-      .map(g => {
-        let isTeam1 = (g.team1Id === this.team.id);
-        let opponentName = isTeam1 ? g.team2 : g.team1;
-        let scoreDisplay = this.getScoreDisplay(isTeam1, g.team1Score, g.team2Score)
-        return {
-          gameId: g.id,
-          opponent: opponentName,
-          time: Date.parse(g.time),
-          location: g.location,
-          locationUrl: g.locationUrl,
-          scoreDisplay: scoreDisplay,
-          homeAway: (isTeam1 ? "vs." : "at")
-        };
-      })
-      .value();
 
-    this.allgames = this.games;
-
-
-    this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });
-  }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {
 
@@ -121,6 +132,13 @@ export class TeamDetailsPage {
     else {
       return "";
     }
+  }
+
+  refreshAll(refresher){
+    this.footballApi.refreshCurrentTourney().subscribe(()=>{
+      refresher.complete();
+      this.ionViewDidLoad();
+    });
   }
 
 }

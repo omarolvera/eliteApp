@@ -3,6 +3,11 @@
     <ion-navbar color="primary">
         <ion-title>Teams</ion-title>
     </ion-navbar>
+    <ion-toolbar>
+        <ion-searchbar placeholder="Search" [(ngModel)]="queryText" (ionInput)="updateTeams()"></ion-searchbar>
+    </ion-toolbar>
+
+
 
 </ion-header>
 
@@ -13,7 +18,7 @@
             <ion-item-divider color="secondary">
                 {{division.divisionName}}
             </ion-item-divider>
-            <button ion-button *ngFor="let team of division.divisionTeams" (click)="itemTapped( $event, team)">
+            <button ion-item *ngFor="let team of division.divisionTeams" (click)="itemTapped( $event, team)">
                     {{team.name}} 
                 </button>
         </ion-item-group>

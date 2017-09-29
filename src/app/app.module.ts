@@ -10,7 +10,8 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyTeamspage, TeamDetailsPage, TournamentsPage, GamePage, TeamsPage, StandingsPage, TeamHomePage } from '../pages/pages';
-import { FootballApiService } from '../shared/shared';
+import { FootballApiService, UserSettingsService } from '../shared/shared';
+import {  IonicStorageModule} from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,10 @@ import { FootballApiService } from '../shared/shared';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    IonicStorageModule.forRoot({
+      driverOrder: ['indexeddb']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -43,7 +47,10 @@ import { FootballApiService } from '../shared/shared';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    FootballApiService
+    FootballApiService,
+    UserSettingsService
+    
+    
     
   ]
 })
