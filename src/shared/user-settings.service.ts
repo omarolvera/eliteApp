@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
-import * as _ from 'lodash';
+//import * as _ from 'lodash';
 
 @Injectable()
 export class UserSettingsService {

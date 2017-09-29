@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingController, NavController, NavParams } from 'ionic-angular';
-import { MyTeamspage, TeamsPage } from '../pages';
+import {  TeamsPage } from '../pages';
 import { FootballApiService } from '../../shared/shared';
 
 
