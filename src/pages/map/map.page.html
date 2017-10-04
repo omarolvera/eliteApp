@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Map</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-fab bottom left>
+        <button ion-fab color="primary" (click)="getDirections()" icon-only>
+    <ion-icon name="navigate"></ion-icon>
+  </button>
+    </ion-fab>
+    <agm-map [latitude]="map.lat" [longitude]="map.lng">
+        <agm-marker [latitude]="map.lat" [longitude]="map.lng" (markerClick)="markerClick($event)">
+            <agm-snazzy-info-window #infoWindow [isOpen]="map.isOpen" [maxWidth]="200" [closeWhenOthersOpen]="true" [latitude]="map.lat" [longitude]="map.lng">
+                <ng-template>
+                    <strong>{{map.markerLabel}}</strong>
+                </ng-template>
+            </agm-snazzy-info-window>
+        </agm-marker>
+    </agm-map>
+</ion-content>

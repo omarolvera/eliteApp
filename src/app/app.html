@@ -16,7 +16,7 @@
             <ion-list-header>
                 Favorites
             </ion-list-header>
-            <button ion-item *ngFor="let fav  of favoriteTeams" (click)="goToTeam(item)">
+            <button ion-item *ngFor="let fav  of favoriteTeams" (click)="goToTeam($event,fav)">
                         {{fav.team.name}}
                 </button>
         </ion-list>

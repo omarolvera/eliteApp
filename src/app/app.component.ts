@@ -1,5 +1,5 @@
 import {  Component, ViewChild } from '@angular/core';
-import { Events, Nav, Platform, LoadingController } from 'ionic-angular';
+import { MenuController, Events, Nav, Platform, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyTeamspage, TeamHomePage, TournamentsPage } from '../pages/pages';
@@ -18,6 +18,7 @@ export class MyApp {
 
 
   constructor(
+    private menuController: MenuController,
     private footballApi: FootballApiService,
     private loadingController: LoadingController,
     private userSettings: UserSettingsService,
@@ -60,12 +61,19 @@ export class MyApp {
 
   }
 
-  goToTeam(favorite) {
+  goToTeam($event,favorite) {
     let loader = this.loadingController.create({
       content: 'Getting data...',
       dismissOnPageChange: true
     });
+
     loader.present();
-    this.footballApi.getTournamentData(favorite.tournamentId).subscribe(x => this.nav.push(TeamHomePage));
+
+    this.footballApi.getTournamentData(favorite.tournamentId)
+    .subscribe(x =>{
+    this.menuController.close();
+     this.nav.push(TeamHomePage,favorite.team);
+    });
+
   }
 }

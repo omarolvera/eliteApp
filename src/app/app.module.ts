@@ -9,9 +9,13 @@ import { MyApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { MyTeamspage, TeamDetailsPage, TournamentsPage, GamePage, TeamsPage, StandingsPage, TeamHomePage } from '../pages/pages';
+import { MyTeamspage, TeamDetailsPage, TournamentsPage, GamePage, TeamsPage, StandingsPage, TeamHomePage, MapPage } from '../pages/pages';
 import { FootballApiService, UserSettingsService } from '../shared/shared';
-import {  IonicStorageModule} from '@ionic/storage';
+import {  IonicStorageModule } from '@ionic/storage';
+import { AgmCoreModule } from '@agm/core';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { SQLite } from '@ionic-native/sqlite';
+
 
 @NgModule({
   declarations: [
@@ -22,15 +26,19 @@ import {  IonicStorageModule} from '@ionic/storage';
     GamePage,
     TeamsPage,
     StandingsPage,
-    TeamHomePage
+    TeamHomePage,
+    MapPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpModule,
-    IonicStorageModule.forRoot({
-      driverOrder: ['indexeddb']
-    })
+    IonicStorageModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBWDUOxgOcuaw8MWzuSSzE4AjJp1KIy5K8'
+    }),
+    AgmSnazzyInfoWindowModule,
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -41,17 +49,16 @@ import {  IonicStorageModule} from '@ionic/storage';
     GamePage,
     TeamsPage,
     StandingsPage,
-    TeamHomePage
+    TeamHomePage,
+    MapPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FootballApiService,
-    UserSettingsService
-    
-    
-    
+    UserSettingsService,
+    SQLite
   ]
 })
 export class AppModule {}

@@ -1,12 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Events } from 'ionic-angular';
-//import * as _ from 'lodash';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+
 
 @Injectable()
 export class UserSettingsService {
   
-    constructor(public storage: Storage, private events:Events) { }
+
+    constructor(
+        public storage: Storage,
+         private events:Events,
+         private sqlite: SQLite
+) {
+    // this.sqlite.create({
+    //     name: 'data.db',
+    //     location: 'default'
+    //   })
+    //     .then((db: SQLiteObject) => {
+      
+      
+    //       db.executeSql('CREATE TABLE IF NOT EXISTS  favoriteTeam(id VARCHAR(max), team VARCHAR(max))', {})
+    //         .then(() => console.log('Executed SQL'))
+    //         .catch(e => console.log(e));
+      
+      
+    //     })
+    //     .catch(e => console.log(e));
+ }
 
     favoriteTeam(team, tournamentId, tournamentName) {
         let item = { team: team, tournamentId: tournamentId, tournamenName: tournamentName }
@@ -29,6 +50,7 @@ export class UserSettingsService {
             items.push(JSON.parse(v));
         });
         return items.length ? items : [];
+        
 
 
     }

@@ -16,7 +16,8 @@ export class FootballApiService {
     currentTourney: any = {};
     private tourneyData: any = {};
 
-    constructor(private http: Http) {
+    constructor(
+        private http: Http) {
 
     }
 
