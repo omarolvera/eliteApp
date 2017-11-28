@@ -18,7 +18,6 @@ import { SQLite } from '@ionic-native/sqlite';
 import { TasksService } from  '../providers/tasks-service';
 
 
-
 @NgModule({
   declarations: [
     MyApp,
@@ -35,7 +34,6 @@ import { TasksService } from  '../providers/tasks-service';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-   // HttpClientModule,
     HttpModule,
     IonicStorageModule.forRoot(),
     AgmCoreModule.forRoot({
