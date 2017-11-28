@@ -7,7 +7,6 @@ import 'rxjs/add/operator/toPromise';
 import { MyApp } from './app.component';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyTeamspage, TeamDetailsPage, TournamentsPage, GamePage, TeamsPage, StandingsPage, TeamHomePage, MapPage, EditTournamentPage } from '../pages/pages';
