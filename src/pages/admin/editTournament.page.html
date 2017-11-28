@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <button menuToggle left>
+                <ion-icon name="menu" ></ion-icon>
+            </button>
+        <ion-title>Elite Schedule</ion-title>
+    </ion-navbar>
+    <ion-toolbar color="secondary">
+        <ion-title>Edit Tournament</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            New Tournament
+        </ion-card-header>
+        <ion-card-content>
+            <form (ngSubmit)="f.form.valid && saveTournament()" #f="ngForm" novalidate>
+                <ion-item>
+                    <ion-label floating>Name</ion-label>
+
+                    <ion-input type="text" name="tournamentName" [(ngModel)]="model.tournamentName" #tournamentName="ngModel" required></ion-input>
+                    <div *ngIf="f.submitted && !tournamentName.valid" class="help-block">Tournament name is required</div>
+                </ion-item>
+                <div>
+                    <button ion-button full color="primary" (click)="saveTournament()">Create Tournament</button>
+                </div>
+            </form>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

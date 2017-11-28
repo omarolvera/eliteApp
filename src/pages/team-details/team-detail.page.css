@@ -1,0 +1,11 @@
+.badge-primary {
+    color: white;
+    background-color: #488aff;
+    border-radius: 4px;
+}
+
+.badge-danger {
+    color: white;
+    background-color: #f53d3d;
+    border-radius: 3px;
+}
