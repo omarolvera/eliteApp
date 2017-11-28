@@ -4,7 +4,8 @@ import { GamePage } from '../pages';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { FootballApiService, UserSettingsService } from '../../shared/shared';
+import { FootballApiService } from '../../shared/shared';
+import { TasksService } from '../../providers/tasks-service';
 
 
 
@@ -19,15 +20,16 @@ export class TeamDetailsPage {
   team: any = {};
   teamStanding: any = {};
   useDateFilter = false;
-  isFollowing = false;
+  isFollowing: any = false;
 
   constructor(
-    private userSettings: UserSettingsService,
+  
     private toast: ToastController,
     private alert: AlertController,
     private nav: NavController,
     private navParams: NavParams,
-    private footballApi: FootballApiService) {
+    private footballApi: FootballApiService,
+  public tasksService: TasksService) {
 
   }
 
@@ -54,10 +56,13 @@ export class TeamDetailsPage {
 
     this.allgames = this.games;
     this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });
-    this.userSettings.isFavoriteTeam(this.team.id).then(value => { 
-    
-      this.isFollowing = value
+    this.tasksService.isFavoriteTeam(this.team.id).then( (value) => {
+      
+      console.log("is favorite team:" + value);
+      this.isFollowing = value;
     });
+
+   
 
   }
 
@@ -92,7 +97,8 @@ export class TeamDetailsPage {
             text: 'Yes',
             handler: () => {
               this.isFollowing = false;
-            this.userSettings.unfavoriteTeam(this.team);
+              this.tasksService.unfavoriteTeam(this.team);
+            //this.userSettings.unfavoriteTeam(this.team);
 
               let toast= this.toast.create({
                 message: 'You have unfollowed this team.',
@@ -111,9 +117,11 @@ export class TeamDetailsPage {
       confirm.present();
     }else{
       this.isFollowing=true;
-      this.userSettings.favoriteTeam(this.team, 
-        this.tourneyData.tournament.id, 
-        this.tourneyData.tournament.name);
+      this.tasksService.favoriteTeam(this.team, this.tourneyData.tournament.id, this.tourneyData.tournament.name);
+
+      // this.userSettings.favoriteTeam(this.team, 
+      //   this.tourneyData.tournament.id, 
+      //   this.tourneyData.tournament.name);
     }
 
 

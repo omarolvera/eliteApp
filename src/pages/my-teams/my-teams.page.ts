@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { TournamentsPage, TeamHomePage } from '../pages';
-import { FootballApiService, UserSettingsService } from '../../shared/shared';
+import { FootballApiService } from '../../shared/shared';
+import { TasksService } from '../../providers/tasks-service';
 
 
 
@@ -32,15 +33,36 @@ export class MyTeamspage {
     //     }
     // ]
     constructor(
-        private userSettings: UserSettingsService,
+   
         private nav: NavController,
         private footballApi: FootballApiService,
-        private loadingController: LoadingController) {
+        private loadingController: LoadingController,
+        public tasksService: TasksService) {
 
     }
 
+
     ionViewDidEnter() {
-        this.userSettings.getAllFavorites().then((data) => this.favorites = data);
+
+
+        
+this.tasksService.openDb().then((data)=>{
+    
+        this.tasksService.getAllFavorites(data).then((response)=>{
+      var items = [];
+      
+      if(response.rows.length >0){
+       for (let index = 0; index < response.rows.length; index++) {
+        items.push(JSON.parse(response.rows.item(index).team));
+         
+       }}
+       this.favorites = items;
+    
+    });
+    
+       
+      });
+
     }
 
 
